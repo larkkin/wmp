@@ -1,8 +1,8 @@
 /// <reference path="PropertyViewFactory.ts" />
 /// <reference path="SceneController.ts" />
-/// <reference path="VariantListMapper.ts" />
+/// <reference path="../../../utils/structures/variantmap/VariantMap.ts" />
 /// <reference path="../model/DiagramElement.ts" />
-/// <reference path="../model/Map.ts" />
+/// <reference path="../../../utils/structures/map/Map.ts" />
 /// <reference path="../model/Property.ts" />
 /// <reference path="../view/HtmlView.ts" />
 /// <reference path="../../../vendor.d.ts" />
@@ -84,7 +84,7 @@ class PropertyEditorController {
     }
 
     private initCombobox(typeName: string, propertyKey: string, element) {
-        var variantsList = VariantListMapper.getVariantList(typeName, propertyKey);
+        var variantsList = VariantMap.getVariantList(typeName, propertyKey);
         var controller: PropertyEditorController = this;
 
         element.find('input').autocomplete({

@@ -1,4 +1,4 @@
-/// <reference path="../model/Map.ts" />
+/// <reference path="../../../utils/structures/map/Map.ts" />
 /// <reference path="../model/Link.ts" />
 /// <reference path="../model/Property.ts" />
 /// <reference path="../../../vendor.d.ts" />

@@ -1,3 +1,4 @@
+/** Utils for Math calculations.*/
 class MathUtils {
 
     public static toDeg(radians: number): number {

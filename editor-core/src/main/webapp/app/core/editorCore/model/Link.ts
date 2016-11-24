@@ -1,8 +1,9 @@
 /// <reference path="DiagramElement.ts" />
 /// <reference path="PropertiesPack.ts" />
-/// <reference path="Map.ts" />
+/// <reference path="../../../utils/structures/map/Map.ts" />
 /// <reference path="Property.ts" />
 /// <reference path="../../../vendor.d.ts" />
+///<reference path="../../../utils/UIDGenerator.ts"/>
 
 class Link implements DiagramElement {
 

@@ -1,5 +1,5 @@
 /// <reference path="HtmlView.ts" />
-/// <reference path="../../../core/editorCore/controller/VariantListMapper.ts" />
+/// <reference path="../../../utils/structures/variantmap/VariantMap.ts" />
 /// <reference path="../../../core/editorCore/model/Property.ts" />
 /// <reference path="../../../utils/StringUtils.ts" />
 
@@ -17,7 +17,7 @@ class DropdownPropertyView extends HtmlView {
 
     constructor(typeName: string, propertyKey: string, property: Property) {
         super();
-        var variantsList: Variant[] = VariantListMapper.getVariantList(typeName, propertyKey);
+        var variantsList: Variant[] = VariantMap.getVariantList(typeName, propertyKey);
         var options: string = '';
         for (var i = 0; i < variantsList.length; i++) {
             var variant = variantsList[i];

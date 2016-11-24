@@ -1,4 +1,4 @@
-/// <reference path="../../model/Map.ts" />
+/// <reference path="../../../../utils/structures/map/Map.ts" />
 /// <reference path="../../model/NodeType.ts" />
 /// <reference path="../../model/PaletteTypes.ts" />
 /// <reference path="../../model/ElementTypes.ts" />
@@ -103,6 +103,6 @@ class TypesParser {
             var variant = variantsArrayNode[i];
             variants.push(new Variant(variant.key, variant.value));
         }
-        VariantListMapper.addVariantList(typeName, propertyKey, variants);
+        VariantMap.addVariantList(typeName, propertyKey, variants);
     }
 }

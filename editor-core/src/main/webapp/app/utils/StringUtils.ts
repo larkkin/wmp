@@ -1,5 +1,6 @@
 /// <reference path="../vendor.d.ts"/>
 
+/** Utils for string formatting and printing.*/
 class StringUtils {
 
     static format(str: string, ...args: string[]): string {

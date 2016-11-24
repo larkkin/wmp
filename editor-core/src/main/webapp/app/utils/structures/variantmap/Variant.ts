@@ -1,3 +1,4 @@
+/** Pair used in VariantMap.*/
 class Variant {
 
     private key: string;

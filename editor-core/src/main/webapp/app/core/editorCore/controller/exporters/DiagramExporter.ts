@@ -1,6 +1,6 @@
 /// <reference path="../../model/DiagramParts.ts" />
 /// <reference path="../../model/DiagramNode.ts" />
-/// <reference path="../../model/Map.ts" />
+/// <reference path="../../../../utils/structures/map/Map.ts" />
 /// <reference path="../../model/Property.ts" />
 /// <reference path="../../../../vendor.d.ts" />
 

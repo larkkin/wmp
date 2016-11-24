@@ -1,6 +1,6 @@
 /// <reference path="HtmlView.ts" />
 /// <reference path="PaletteElementView.ts" />
-/// <reference path="../../../core/editorCore/model/Map.ts" />
+/// <reference path="../../../utils/structures/map/Map.ts" />
 /// <reference path="../../../core/editorCore/model/NodeType.ts" />
 /// <reference path="../../../utils/StringUtils.ts" />
 

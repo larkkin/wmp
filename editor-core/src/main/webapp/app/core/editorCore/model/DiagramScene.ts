@@ -1,4 +1,4 @@
-/// <reference path="Map.ts" />
+/// <reference path="../../../utils/structures/map/Map.ts" />
 /// <reference path="DiagramNode.ts" />
 /// <reference path="Link.ts" />
 /// <reference path="../../../core/editorCore/controller/DiagramElementListener.ts" />

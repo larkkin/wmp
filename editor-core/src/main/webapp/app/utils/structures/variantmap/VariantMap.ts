@@ -1,6 +1,7 @@
-/// <reference path="../model/Variant.ts" />
+/// <reference path="./Variant.ts" />
 
-class VariantListMapper {
+/** Two dimensional map<(String, String), Variant[]>.*/
+class VariantMap {
 
     private static variantsMap = {};
 

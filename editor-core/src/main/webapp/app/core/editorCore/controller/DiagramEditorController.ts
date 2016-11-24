@@ -5,7 +5,7 @@
 /// <reference path="parsers/DiagramJsonParser.ts" />
 /// <reference path="exporters/DiagramExporter.ts" />
 /// <reference path="../model/DiagramEditor.ts" />
-/// <reference path="../model/Map.ts"/>
+/// <reference path="../../../utils/structures/map/Map.ts"/>
 /// <reference path="../../../vendor.d.ts" />
 
 class DiagramEditorController {
