@@ -1080,7 +1080,7 @@ interface JQueryStatic {
      * @param array The Array to translate.
      * @param callback The function to process each item against. The first argument to the function is the array item, the second argument is the index in array The function can return any value. Within the function, this refers to the global (window) object.
      */
-    map<T, U>(array: T[], callback: (elementOfArray: T, indexInArray: number) => U): U[];
+    Map<String, T, U>(array: T[], callback: (elementOfArray: T, indexInArray: number) => U): U[];
     /**
      * Translate all items in an array or object to new array of items.
      * 

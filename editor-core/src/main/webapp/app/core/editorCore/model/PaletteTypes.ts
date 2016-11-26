@@ -1,11 +1,12 @@
-/// <reference path="../../../utils/structures/map/Map.ts" />
 /// <reference path="NodeType.ts" />
 
-class PaletteTypes {
+module EditorCore {
+    export class PaletteTypes {
 
-    categories: Map<Map<NodeType>>;
+        categories: Map<String, Map<String, NodeType>>;
 
-    constructor() {
-        this.categories = {};
+        constructor() {
+            this.categories = new Map<String, Map<String, NodeType>>()
+        }
     }
 }

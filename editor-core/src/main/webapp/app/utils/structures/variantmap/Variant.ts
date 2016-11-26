@@ -1,20 +1,22 @@
-/** Pair used in VariantMap.*/
-class Variant {
+module Utils {
+    /** Pair used in VariantMap.*/
+    export class Variant {
 
-    private key: string;
-    private value: string;
+        private key: string;
+        private value: string;
 
-    constructor(key: string, value: string) {
-        this.key = key;
-        this.value = value;
+        constructor(key: string, value: string) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public getKey(): string {
+            return this.key;
+        }
+
+        public getValue(): string {
+            return this.value;
+        }
+
     }
-
-    public getKey(): string {
-        return this.key;
-    }
-
-    public getValue(): string {
-        return this.value;
-    }
-
 }

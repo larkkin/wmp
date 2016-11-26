@@ -1,13 +1,14 @@
-/// <reference path="../../../utils/structures/map/Map.ts" />
 /// <reference path="Property.ts" />
 
-class PropertiesPack {
+module EditorCore {
+    export class PropertiesPack {
 
-    logical: Map<Property>;
-    graphical: Map<Property>;
+        logical: Map<String, Property>;
+        graphical: Map<String, Property>;
 
-    constructor(logical: Map<Property>, graphical: Map<Property>) {
-        this.logical = logical;
-        this.graphical = graphical;
+        constructor(logical: Map<String, Property>, graphical: Map<String, Property>) {
+            this.logical = logical;
+            this.graphical = graphical;
+        }
     }
 }

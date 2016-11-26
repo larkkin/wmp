@@ -1,13 +1,15 @@
-class Gesture {
+module Common {
+    export class Gesture {
 
-    name: string;
-    key: string[];
-    factor: number;
+        name: string;
+        key: string[];
+        factor: number;
 
-    constructor(name : string, key : string[], factor: number) {
-        this.name = name;
-        this.key = key;
-        this.factor = factor;
+        constructor(name: string, key: string[], factor: number) {
+            this.name = name;
+            this.key = key;
+            this.factor = factor;
+        }
+
     }
-
 }

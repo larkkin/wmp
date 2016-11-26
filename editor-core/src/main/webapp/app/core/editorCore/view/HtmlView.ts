@@ -1,8 +1,9 @@
-class HtmlView {
+module EditorCore {
+    export class HtmlView {
+        protected content: string = "";
 
-    protected content: string = "";
-
-    public getContent(): string {
-        return this.content;
+        public getContent(): string {
+            return this.content;
+        }
     }
 }

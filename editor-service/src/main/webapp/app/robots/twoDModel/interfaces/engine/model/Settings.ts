@@ -1,3 +1,5 @@
-interface Settings {
+module Robots {
+    export interface Settings {
 
+    }
 }

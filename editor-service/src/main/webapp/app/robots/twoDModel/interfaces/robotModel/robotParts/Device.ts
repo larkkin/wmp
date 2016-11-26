@@ -1,3 +1,5 @@
-interface Device {
+module Robots {
+    export interface Device {
 
+    }
 }

@@ -1,10 +1,12 @@
-class RGBAColor {
+module Robots {
+    export class RGBAColor {
 
-    alpha: number;
-    rgb: string;
+        alpha: number;
+        rgb: string;
 
-    constructor(alpha: number, rgb: string) {
-        this.alpha = alpha;
-        this.rgb = rgb;
+        constructor(alpha: number, rgb: string) {
+            this.alpha = alpha;
+            this.rgb = rgb;
+        }
     }
 }

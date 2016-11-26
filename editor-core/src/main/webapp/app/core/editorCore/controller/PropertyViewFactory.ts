@@ -6,19 +6,21 @@
 /// <reference path="../view/SpinnerPropertyView.ts" />
 /// <reference path="../../../vendor.d.ts" />
 
-class PropertyViewFactory {
+module EditorCore {
+    export class PropertyViewFactory {
 
-    public createView(nodeId: string, typeName: string, propertyKey: string, property: Property): HtmlView {
-        switch (property.type) {
-            case "string":
-            case "combobox":
-                return new StringPropertyView(nodeId, propertyKey, property);
-            case "checkbox":
-                return new CheckboxPropertyView(typeName, propertyKey, property);
-            case "dropdown":
-                return new DropdownPropertyView(typeName, propertyKey, property);
-            case "spinner":
-                return new SpinnerPropertyView(propertyKey, property);
+        public createView(nodeId: string, typeName: string, propertyKey: string, property: Property): HtmlView {
+            switch (property.type) {
+                case "string":
+                case "combobox":
+                    return new StringPropertyView(nodeId, propertyKey, property);
+                case "checkbox":
+                    return new CheckboxPropertyView(typeName, propertyKey, property);
+                case "dropdown":
+                    return new DropdownPropertyView(typeName, propertyKey, property);
+                case "spinner":
+                    return new SpinnerPropertyView(propertyKey, property);
+            }
         }
     }
 }

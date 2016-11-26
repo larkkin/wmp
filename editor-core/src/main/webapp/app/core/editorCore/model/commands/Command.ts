@@ -1,7 +1,9 @@
-interface Command {
+module EditorCore {
+    export interface Command {
 
-    execute(): void;
-    revert(): void;
-    isRevertible(): boolean;
+        execute(): void;
+        revert(): void;
+        isRevertible(): boolean;
 
+    }
 }

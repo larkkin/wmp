@@ -1,5 +1,7 @@
 /// <reference path="ColorFieldItem.ts" />
 
-interface PencilItem extends ColorFieldItem {
-    updatePath(x: number, y: number): void
+module Robots {
+    export interface PencilItem extends ColorFieldItem {
+        updatePath(x: number, y: number): void
+    }
 }

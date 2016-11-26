@@ -1,4 +1,6 @@
 /// <reference path="AbstractItem.ts" />
 
-interface ColorFieldItem extends AbstractItem {
+module Robots {
+    export interface ColorFieldItem extends AbstractItem {
+    }
 }

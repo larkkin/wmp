@@ -2,6 +2,10 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         ts: {
+            modules: {
+                src: ["app/*.ts"],
+                out: "resources/js/compiled/modules.js"
+            },
             root: {
                 src: ["app/robots/*.ts"],
                 out: "resources/js/compiled/root.js"
@@ -25,10 +29,14 @@ module.exports = function (grunt) {
             menu: {
                 src: ["app/common/menu/**/*.ts"],
                 out: "resources/js/compiled/menu.js"
+            },
+            options: {
+                target: 'es6'
             }
         }
     });
 
     grunt.loadNpmTasks("grunt-ts");
-    grunt.registerTask("default", ["ts:root", "ts:interpreter", "ts:twoDModelRobots", "ts:gestures", "ts:menu", "ts:editor"]);
+    grunt.registerTask("default", ["ts:modules", "ts:root", "ts:interpreter", "ts:twoDModelRobots", "ts:gestures",
+        "ts:menu", "ts:editor"]);
 }

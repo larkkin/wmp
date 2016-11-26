@@ -7,46 +7,48 @@
 /// <reference path="../../interfaces/robotModel/PortInfo.ts" />
 /// <reference path="../../../../common/constants/GeneralConstants.ts" />
 
-class TwoDRobotModel extends CommonRobotModelImpl {
-    private name: string;
-    private image: string;
-    private realModel: RobotModelInterface;
+module Robots {
+    export class TwoDRobotModel extends CommonRobotModelImpl {
+        private name: string;
+        private image: string;
+        private realModel: RobotModelInterface;
 
-    constructor(realModel: RobotModelInterface, name: string) {
-        super();
-        var twoDRobotModel = this;
-        this.realModel = realModel;
-        this.name = name;
-        this.image = GeneralConstants.APP_ROOT_PATH + "images/2dmodel/trikKit/trikTwoDRobot.svg";
+        constructor(realModel: RobotModelInterface, name: string) {
+            super();
+            var twoDRobotModel = this;
+            this.realModel = realModel;
+            this.name = name;
+            this.image = Common.GeneralConstants.APP_ROOT_PATH + "images/2dmodel/trikKit/trikTwoDRobot.svg";
 
-        realModel.getAvailablePorts().forEach(function(port) {
-            twoDRobotModel.addAllowedConnection(port, realModel.getAllowedDevices(port));
-        });
-    }
-
-    sensorImagePath(deviceType: DeviceInfo): string {
-        if (deviceType.isA(LightSensor)) {
-            return GeneralConstants.APP_ROOT_PATH + "images/2dmodel/trikKit/twoDColorEmpty.svg";
-        } else if (deviceType.isA(TrikInfraredSensor)) {
-            return GeneralConstants.APP_ROOT_PATH + "images/2dmodel/trikKit/twoDIrRangeSensor.svg";
-        } else if (deviceType.isA(TrikSonarSensor)) {
-            return GeneralConstants.APP_ROOT_PATH + "images/2dmodel/trikKit/twoDUsRangeSensor.svg";
-        } else if (deviceType.isA(TrikLineSensor)) {
-            return GeneralConstants.APP_ROOT_PATH + "images/2dmodel/trikKit/twoDVideoModule.svg";
+            realModel.getAvailablePorts().forEach(function (port) {
+                twoDRobotModel.addAllowedConnection(port, realModel.getAllowedDevices(port));
+            });
         }
 
-        return null;
-    }
+        sensorImagePath(deviceType: DeviceInfo): string {
+            if (deviceType.isA(LightSensor)) {
+                return Common.GeneralConstants.APP_ROOT_PATH + "images/2dmodel/trikKit/twoDColorEmpty.svg";
+            } else if (deviceType.isA(TrikInfraredSensor)) {
+                return Common.GeneralConstants.APP_ROOT_PATH + "images/2dmodel/trikKit/twoDIrRangeSensor.svg";
+            } else if (deviceType.isA(TrikSonarSensor)) {
+                return Common.GeneralConstants.APP_ROOT_PATH + "images/2dmodel/trikKit/twoDUsRangeSensor.svg";
+            } else if (deviceType.isA(TrikLineSensor)) {
+                return Common.GeneralConstants.APP_ROOT_PATH + "images/2dmodel/trikKit/twoDVideoModule.svg";
+            }
 
-    getName(): string {
-        return this.name;
-    }
+            return null;
+        }
 
-    getRobotImage(): string {
-        return this.image;
-    }
+        getName(): string {
+            return this.name;
+        }
 
-    getConfigurablePorts(): PortInfo[] {
-        return this.realModel.getConfigurablePorts();
+        getRobotImage(): string {
+            return this.image;
+        }
+
+        getConfigurablePorts(): PortInfo[] {
+            return this.realModel.getConfigurablePorts();
+        }
     }
 }

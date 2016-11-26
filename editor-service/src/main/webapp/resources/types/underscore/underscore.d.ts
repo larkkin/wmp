@@ -133,7 +133,7 @@ interface UnderscoreStatic {
 	* @param context `this` object in `iterator`, optional.
 	* @return The mapped array result.
 	**/
-	map<T, TResult>(
+	Map<String, T, TResult>(
 		list: _.List<T>,
 		iterator: _.ListIterator<T, TResult>,
 		context?: any): TResult[];
@@ -145,7 +145,7 @@ interface UnderscoreStatic {
 	* @param context `this` object in `iterator`, optional.
 	* @return The mapped object result.
 	**/
-	map<T, TResult>(
+	Map<String, T, TResult>(
 		object: _.Dictionary<T>,
 		iterator: _.ObjectIterator<T, TResult>,
 		context?: any): TResult[];
@@ -1640,13 +1640,13 @@ interface Underscore<T> {
 	* Wrapped type `any[]`.
 	* @see _.map
 	**/
-	map<TResult>(iterator: _.ListIterator<T, TResult>, context?: any): TResult[];
+	Map<String, TResult>(iterator: _.ListIterator<T, TResult>, context?: any): TResult[];
 
 	/**
 	* Wrapped type `any[]`.
 	* @see _.map
 	**/
-	map<TResult>(iterator: _.ObjectIterator<T, TResult>, context?: any): TResult[];
+	Map<String, TResult>(iterator: _.ObjectIterator<T, TResult>, context?: any): TResult[];
 
 	/**
 	* @see _.map
@@ -2485,25 +2485,26 @@ interface _Chain<T> {
 	* Wrapped type `any[]`.
 	* @see _.map
 	**/
-	map<TArray>(iterator: _.ListIterator<T, TArray[]>, context?: any): _ChainOfArrays<TArray>;
+	Map<String, TArray>(iterator: _.ListIterator<T, TArray[]>, context?: any): _ChainOfArrays<TArray>;
 
 	/**
 	* Wrapped type `any[]`.
 	* @see _.map
 	**/
-	map<TResult>(iterator: _.ListIterator<T, TResult>, context?: any): _Chain<TResult>;
+	Map<String, TResult>(iterator: _.ListIterator<T, TResult>, context?: any): _Chain<TResult>;
 
 	/**
 	* Wrapped type `any[]`.
 	* @see _.map
 	**/
-	map<TArray>(iterator: _.ObjectIterator<T, TArray[]>, context?: any): _ChainOfArrays<TArray>;
+	Map<String, TArray>(iterator: _.ObjectIterator<T, TArray[]>, context?: any): _ChainOfArrays<TArray>;
 
 	/**
 	* Wrapped type `any[]`.
 	* @see _.map
 	**/
-	map<TResult>(iterator: _.ObjectIterator<T, TResult>, context?: any): _Chain<TResult>;
+
+	Map<String, TResult>(iterator: _.ObjectIterator<T, TResult>, context?: any): _Chain<TResult>;
 
 	/**
 	* @see _.map

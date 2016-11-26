@@ -1,22 +1,29 @@
-class RootDiagramController {
+/// <reference path="../vendor.d.ts" />
 
-    constructor($scope, $compile) {
-        $scope.root = this;
+module Robots {
 
-        $scope.$on("emitCheckingResult", (event, result) => {
-            $scope.$broadcast("displayCheckingResult", result);
-        });
+    export class RootDiagramController {
 
-        $scope.$on("emit2dModelLoad", (event, fieldXML) => {
-            $scope.$broadcast("2dModelLoad", fieldXML);
-        });
+        constructor($scope, $compile) {
+            $scope.root = this;
 
-        $scope.$on("emitInterpret", (event, timeline) => {
-            $scope.$broadcast("interpret", timeline);
-        });
-        
-        $scope.$on("emitStop", (event) => {
-            $scope.$broadcast("stop"); 
-        });
+            $scope.$on("emitCheckingResult", (event, result) => {
+                $scope.$broadcast("displayCheckingResult", result);
+            });
+
+            $scope.$on("emit2dModelLoad", (event, fieldXML) => {
+                $scope.$broadcast("2dModelLoad", fieldXML);
+            });
+
+            $scope.$on("emitInterpret", (event, timeline) => {
+                $scope.$broadcast("interpret", timeline);
+            });
+
+            $scope.$on("emitStop", (event) => {
+                $scope.$broadcast("stop");
+            });
+        }
     }
+
+    angular.module("Robots").controller("RootDiagramController", RootDiagramController);
 }

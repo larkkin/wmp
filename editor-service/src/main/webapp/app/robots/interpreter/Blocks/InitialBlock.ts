@@ -1,19 +1,24 @@
-class InitialBlock extends AbstractBlock {
-    
-    private EXPECTED_NUMBER_OF_OUTBOUND_LINKS = 1;
+module Robots {
+    import DiagramNode = EditorCore.DiagramNode;
+    import Link = EditorCore.Link;
+    export class InitialBlock extends AbstractBlock {
 
-    constructor(node: DiagramNode, outboundLinks: Link[]) {
-        super(node, outboundLinks);
-    }
-    
-    public run(): void {
-        var output = this.node.getName(); + "\n";
-        this.checkExpectedNumberOfOutboundLinks(this.EXPECTED_NUMBER_OF_OUTBOUND_LINKS);
-        console.log(output);
-    }
+        private EXPECTED_NUMBER_OF_OUTBOUND_LINKS = 1;
 
-    public getNextNodeId(): string {
-        return this.outboundLinks[0].getJointObject().get('target').id;
+        constructor(node: DiagramNode, outboundLinks: Link[]) {
+            super(node, outboundLinks);
+        }
+
+        public run(): void {
+            var output = this.node.getName();
+            +"\n";
+            this.checkExpectedNumberOfOutboundLinks(this.EXPECTED_NUMBER_OF_OUTBOUND_LINKS);
+            console.log(output);
+        }
+
+        public getNextNodeId(): string {
+            return this.outboundLinks[0].getJointObject().get('target').id;
+        }
+
     }
-    
 }

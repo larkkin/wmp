@@ -1,185 +1,186 @@
 /// <reference path="../../model/DiagramParts.ts" />
 /// <reference path="../../model/DiagramNode.ts" />
-/// <reference path="../../../../utils/structures/map/Map.ts" />
 /// <reference path="../../model/Property.ts" />
 /// <reference path="../../../../vendor.d.ts" />
 
-class DiagramExporter {
+module EditorCore {
+    export class DiagramExporter {
 
-    public exportDiagramStateToJSON(graph: joint.dia.Graph, diagramParts: DiagramParts) {
-        var json = {
-            'nodes': [],
-            'links': []
-        };
-
-        json.nodes = json.nodes.concat(this.exportNodes(graph, diagramParts));
-        json.links = this.exportLinks(diagramParts);
-
-        return json;
-    }
-
-    protected exportNodes(graph: joint.dia.Graph, diagramParts: DiagramParts) {
-        var nodes = [];
-
-        for (var id in diagramParts.nodesMap) {
-            var node: DiagramNode = diagramParts.nodesMap[id];
-            var nodeJSON = {
-                'logicalId': node.getLogicalId(),
-                'graphicalId': node.getJointObject().id,
-                'type': node.getType(),
-                'logicalChildren': [],
-                'graphicalChildren': [],
-                'logicalLinksIds': [],
-                'graphicalLinksIds': [],
-                'logicalProperties': [],
-                'graphicalProperties': [],
-                'incomingExplosions': []
+        public exportDiagramStateToJSON(graph: joint.dia.Graph, diagramParts: DiagramParts) {
+            var json = {
+                'nodes': [],
+                'links': []
             };
 
-            var constLogicalProperties: Map<Property> = node.getConstPropertiesPack().logical;
-            if (node.getType() === "Subprogram") {
-                constLogicalProperties["outgoingExplosion"] = new Property("outgoingExplosion", "qReal::Id",
-                    "qrm:/RobotsMetamodel/RobotsDiagram/SubprogramDiagram/{" +
-                    (<SubprogramNode> node).getSubprogramDiagramId() + "}");
-            }
+            json.nodes = json.nodes.concat(this.exportNodes(graph, diagramParts));
+            json.links = this.exportLinks(diagramParts);
 
-            var changeableLogicalPropertiesArray = this.exportProperties(node.getChangeableProperties());
-            var constLogicalPropertiesArray = this.exportProperties(constLogicalProperties);
-            nodeJSON.logicalProperties = changeableLogicalPropertiesArray.concat(constLogicalPropertiesArray);
+            return json;
+        }
 
-            nodeJSON.graphicalProperties = this.exportProperties(node.getConstPropertiesPack().graphical);
+        protected exportNodes(graph: joint.dia.Graph, diagramParts: DiagramParts) {
+            var nodes = [];
 
-            nodeJSON.graphicalProperties.push(
-                {
-                    "name": "position",
-                    "value": "" + node.getX() + ", " + node.getY(),
-                    "type": "QPointF"
+            for (var id in diagramParts.nodesMap) {
+                var node: DiagramNode = diagramParts.nodesMap[id];
+                var nodeJSON = {
+                    'logicalId': node.getLogicalId(),
+                    'graphicalId': node.getJointObject().id,
+                    'type': node.getType(),
+                    'logicalChildren': [],
+                    'graphicalChildren': [],
+                    'logicalLinksIds': [],
+                    'graphicalLinksIds': [],
+                    'logicalProperties': [],
+                    'graphicalProperties': [],
+                    'incomingExplosions': []
+                };
+
+                var constLogicalProperties: Map<String, Property> = node.getConstPropertiesPack().logical;
+                if (node.getType() === "Subprogram") {
+                    constLogicalProperties["outgoingExplosion"] = new Property("outgoingExplosion", "qReal::Id",
+                        "qrm:/RobotsMetamodel/RobotsDiagram/SubprogramDiagram/{" +
+                        (<SubprogramNode> node).getSubprogramDiagramId() + "}");
                 }
-            );
 
-            var graphicalLinks = graph.getConnectedLinks(node.getJointObject(), { inbound: true, outbound: true });
+                var changeableLogicalPropertiesArray = this.exportProperties(node.getChangeableProperties());
+                var constLogicalPropertiesArray = this.exportProperties(constLogicalProperties);
+                nodeJSON.logicalProperties = changeableLogicalPropertiesArray.concat(constLogicalPropertiesArray);
 
-            graphicalLinks.forEach(function (link) {
-                nodeJSON.graphicalLinksIds.push({'id': link.id});
-                nodeJSON.logicalLinksIds.push({'id': diagramParts.linksMap[link.id].getLogicalId()});
-            });
+                nodeJSON.graphicalProperties = this.exportProperties(node.getConstPropertiesPack().graphical);
 
-            nodes.push(nodeJSON);
-        }
+                nodeJSON.graphicalProperties.push(
+                    {
+                        "name": "position",
+                        "value": "" + node.getX() + ", " + node.getY(),
+                        "type": "QPointF"
+                    }
+                );
 
-        return nodes;
-    }
+                var graphicalLinks = graph.getConnectedLinks(node.getJointObject(), {inbound: true, outbound: true});
 
-    protected exportLinks(diagramParts: DiagramParts) {
-        var links = [];
+                graphicalLinks.forEach(function (link) {
+                    nodeJSON.graphicalLinksIds.push({'id': link.id});
+                    nodeJSON.logicalLinksIds.push({'id': diagramParts.linksMap[link.id].getLogicalId()});
+                });
 
-        for (var id in diagramParts.linksMap) {
-            var link: Link = diagramParts.linksMap[id];
-            var jointObject = link.getJointObject();
-            if (jointObject.get('vertices')) {
-                var vertices = this.exportVertices(jointObject);
+                nodes.push(nodeJSON);
             }
-            var linkJSON = {
-                'logicalId': link.getLogicalId(),
-                'graphicalId': jointObject.id,
-                'type': link.getType(),
-                'logicalChildren': [],
-                'graphicalChildren': [],
-                'logicalLinksIds': [],
-                'graphicalLinksIds': [],
-                'logicalProperties': [],
-                'graphicalProperties': [],
-                'incomingExplosions': []
-            };
 
-            var changeableLogicalProperties = this.exportProperties(link.getChangeableProperties());
-            var constLogicalProperties = this.exportProperties(link.getConstPropertiesPack().logical);
-            linkJSON.logicalProperties = changeableLogicalProperties.concat(constLogicalProperties);
+            return nodes;
+        }
 
-            linkJSON.graphicalProperties = this.exportProperties(link.getConstPropertiesPack().graphical);
+        protected exportLinks(diagramParts: DiagramParts) {
+            var links = [];
 
-            var sourceObject = diagramParts.nodesMap[jointObject.get('source').id];
-            var targetObject = diagramParts.nodesMap[jointObject.get('target').id];
+            for (var id in diagramParts.linksMap) {
+                var link: Link = diagramParts.linksMap[id];
+                var jointObject = link.getJointObject();
+                if (jointObject.get('vertices')) {
+                    var vertices = this.exportVertices(jointObject);
+                }
+                var linkJSON = {
+                    'logicalId': link.getLogicalId(),
+                    'graphicalId': jointObject.id,
+                    'type': link.getType(),
+                    'logicalChildren': [],
+                    'graphicalChildren': [],
+                    'logicalLinksIds': [],
+                    'graphicalLinksIds': [],
+                    'logicalProperties': [],
+                    'graphicalProperties': [],
+                    'incomingExplosions': []
+                };
 
-            var logicalSourceValue: string =  (sourceObject) ? sourceObject.getType() +
+                var changeableLogicalProperties = this.exportProperties(link.getChangeableProperties());
+                var constLogicalProperties = this.exportProperties(link.getConstPropertiesPack().logical);
+                linkJSON.logicalProperties = changeableLogicalProperties.concat(constLogicalProperties);
+
+                linkJSON.graphicalProperties = this.exportProperties(link.getConstPropertiesPack().graphical);
+
+                var sourceObject = diagramParts.nodesMap[jointObject.get('source').id];
+                var targetObject = diagramParts.nodesMap[jointObject.get('target').id];
+
+                var logicalSourceValue: string = (sourceObject) ? sourceObject.getType() +
                 "/{" + sourceObject.getLogicalId() + "}" :
-                "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID";
+                    "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID";
 
-            var logicalSource = {
-                'name': "from",
-                'value': "qrm:/RobotsMetamodel/RobotsDiagram/" + logicalSourceValue,
-                'type': "qReal::Id"
-            };
+                var logicalSource = {
+                    'name': "from",
+                    'value': "qrm:/RobotsMetamodel/RobotsDiagram/" + logicalSourceValue,
+                    'type': "qReal::Id"
+                };
 
-            var logicalTargetValue: string =  (targetObject) ? targetObject.getType() +
+                var logicalTargetValue: string = (targetObject) ? targetObject.getType() +
                 "/{" + targetObject.getLogicalId() + "}" :
-                "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID";
+                    "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID";
 
-            var logicalTarget = {
-                'name': "to",
-                'value': "qrm:/RobotsMetamodel/RobotsDiagram/" + logicalTargetValue,
-                'type': "qReal::Id"
-            };
+                var logicalTarget = {
+                    'name': "to",
+                    'value': "qrm:/RobotsMetamodel/RobotsDiagram/" + logicalTargetValue,
+                    'type': "qReal::Id"
+                };
 
-            linkJSON.logicalProperties.push(logicalSource);
-            linkJSON.logicalProperties.push(logicalTarget);
+                linkJSON.logicalProperties.push(logicalSource);
+                linkJSON.logicalProperties.push(logicalTarget);
 
-            var graphicalSourceValue: string = (sourceObject) ? sourceObject.getType() +
+                var graphicalSourceValue: string = (sourceObject) ? sourceObject.getType() +
                 "/{" + jointObject.get('source').id + "}" :
-                "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID";
+                    "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID";
 
-            var graphicalSource = {
-                'name': "from",
-                'value': "qrm:/RobotsMetamodel/RobotsDiagram/" + graphicalSourceValue,
-                'type': "qReal::Id"
-            };
+                var graphicalSource = {
+                    'name': "from",
+                    'value': "qrm:/RobotsMetamodel/RobotsDiagram/" + graphicalSourceValue,
+                    'type': "qReal::Id"
+                };
 
-            var graphicalTargetValue: string = (targetObject) ? targetObject.getType() +
+                var graphicalTargetValue: string = (targetObject) ? targetObject.getType() +
                 "/{" + jointObject.get('target').id + "}" :
-                "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID";
+                    "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID";
 
-            var graphicalTarget = {
-                'name': "to",
-                'value': "qrm:/RobotsMetamodel/RobotsDiagram/" + graphicalTargetValue,
-                'type': "qReal::Id"
-            };
+                var graphicalTarget = {
+                    'name': "to",
+                    'value': "qrm:/RobotsMetamodel/RobotsDiagram/" + graphicalTargetValue,
+                    'type': "qReal::Id"
+                };
 
-            linkJSON.graphicalProperties.push(graphicalSource);
-            linkJSON.graphicalProperties.push(graphicalTarget);
+                linkJSON.graphicalProperties.push(graphicalSource);
+                linkJSON.graphicalProperties.push(graphicalTarget);
 
-            links.push(linkJSON);
+                links.push(linkJSON);
+            }
+
+            return links;
         }
 
-        return links;
-    }
+        protected exportProperties(properties: Map<String, Property>) {
+            var propertiesJSON = [];
+            for (var propertyName in properties) {
+                var type: string = properties[propertyName].type;
+                type = (type === "string" || type === "combobox" || type == "checkbox" || type == "dropdown") ?
+                    "QString" : type;
+                var property = {
+                    'name': propertyName,
+                    'value': properties[propertyName].value,
+                    'type': type
+                };
+                propertiesJSON.push(property);
+            }
 
-    protected exportProperties(properties: Map<Property>) {
-        var propertiesJSON = [];
-        for (var propertyName in properties) {
-            var type: string = properties[propertyName].type;
-            type = (type === "string" || type === "combobox" || type == "checkbox" || type == "dropdown") ?
-                "QString" : type;
-            var property = {
-                'name': propertyName,
-                'value': properties[propertyName].value,
-                'type': type
-            };
-            propertiesJSON.push(property);
+            return propertiesJSON;
         }
 
-        return propertiesJSON;
-    }
-
-    protected exportVertices(jointObject): string {
-        var vertices = jointObject.get('vertices');
-        var verticesStr: string = (jointObject.get('source').id) ? "0, 0 : " :
+        protected exportVertices(jointObject): string {
+            var vertices = jointObject.get('vertices');
+            var verticesStr: string = (jointObject.get('source').id) ? "0, 0 : " :
             "" + jointObject.get('source').x + ", " + jointObject.get('source').y + " : ";
-        if (vertices) {
-            vertices.forEach(function (vertex) {
-                verticesStr += vertex.x + ", " + vertex.y + " : ";
-            });
+            if (vertices) {
+                vertices.forEach(function (vertex) {
+                    verticesStr += vertex.x + ", " + vertex.y + " : ";
+                });
+            }
+            return verticesStr + (jointObject.get('target').id ? "0, 0 : " :
+                "" + jointObject.get('target').x + ", " + jointObject.get('target').y + " : ");
         }
-        return verticesStr + (jointObject.get('target').id ? "0, 0 : " :
-            "" + jointObject.get('target').x + ", " + jointObject.get('target').y + " : ");
     }
 }

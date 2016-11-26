@@ -7,8 +7,11 @@ module.exports = function (grunt) {
                 out: "resources/js/compiled/editor-core.js"
             },
             utils: {
-                src: ["app/utils/*.ts"],
+                src: ["app/utils/**/*.ts"],
                 out: "resources/js/compiled/utils.js"
+            },
+            options: {
+                target: 'es6'
             }
         }
     });

@@ -1,138 +1,140 @@
-class Folder {
+module Common {
+    export class Folder {
 
-    private id: number;
-    private name: string;
-    private parent: Folder;
-    private childrenFolders: Folder[];
-    private diagrams: Diagram[];
+        private id: number;
+        private name: string;
+        private parent: Folder;
+        private childrenFolders: Folder[];
+        private diagrams: Diagram[];
 
-    public static createFromDAO(folder: TFolder, parent: Folder): Folder {
-        var diagrams: Diagram[] = [];
+        public static createFromDAO(folder: TFolder, parent: Folder): Folder {
+            var diagrams: Diagram[] = [];
 
-        if (folder.diagrams != null) {
-            for (var i = 0; i < folder.diagrams.length; i++) {
-                diagrams.push(Diagram.createFromDAO(folder.diagrams[i]));
+            if (folder.diagrams != null) {
+                for (var i = 0; i < folder.diagrams.length; i++) {
+                    diagrams.push(Diagram.createFromDAO(folder.diagrams[i]));
+                }
             }
-        }
 
-        var resultFolder: Folder = new Folder(folder.id, folder.folderName, parent, diagrams);
+            var resultFolder: Folder = new Folder(folder.id, folder.folderName, parent, diagrams);
 
-        if (folder.childrenFolders != null) {
-            for (var i = 0; i < folder.childrenFolders.length; i++) {
-                resultFolder.addChild(Folder.createFromDAO(folder.childrenFolders[i], resultFolder));
+            if (folder.childrenFolders != null) {
+                for (var i = 0; i < folder.childrenFolders.length; i++) {
+                    resultFolder.addChild(Folder.createFromDAO(folder.childrenFolders[i], resultFolder));
+                }
             }
+
+            return resultFolder;
         }
 
-        return resultFolder;
-    }
-
-    constructor(id: number, name: string, parent: Folder, diagrams: Diagram[]= [], childrenFolders: Folder[] = []) {
-        this.id = id;
-        this.name = name;
-        this.parent = parent;
-        this.diagrams = diagrams;
-        this.childrenFolders = childrenFolders;
-    }
-
-    public getChildrenNames(): string[] {
-        var folderNames: string[] = [];
-        for (var i = 0; i < this.childrenFolders.length; i++) {
-            folderNames.push(this.childrenFolders[i].getName());
+        constructor(id: number, name: string, parent: Folder, diagrams: Diagram[] = [], childrenFolders: Folder[] = []) {
+            this.id = id;
+            this.name = name;
+            this.parent = parent;
+            this.diagrams = diagrams;
+            this.childrenFolders = childrenFolders;
         }
 
-        return folderNames;
-    }
-
-    public getDiagramNames(): string[] {
-        var diagramNames: string[] = [];
-        for (var i = 0; i < this.diagrams.length; i++) {
-            diagramNames.push(this.diagrams[i].getName());
-        }
-
-        return diagramNames;
-    }
-
-    public findChildByName(childName: string): Folder {
-        for (var i = 0; i < this.childrenFolders.length; i++) {
-            if (this.childrenFolders[i].getName() === childName) {
-                return this.childrenFolders[i];
+        public getChildrenNames(): string[] {
+            var folderNames: string[] = [];
+            for (var i = 0; i < this.childrenFolders.length; i++) {
+                folderNames.push(this.childrenFolders[i].getName());
             }
-        }
-        return null;
-    }
 
-    public getDiagramIdByName(diagramName: string): number {
-        for (var i = 0; i < this.diagrams.length; i++) {
-            if ( this.diagrams[i].getName() === diagramName) {
-                return  this.diagrams[i].getId();
+            return folderNames;
+        }
+
+        public getDiagramNames(): string[] {
+            var diagramNames: string[] = [];
+            for (var i = 0; i < this.diagrams.length; i++) {
+                diagramNames.push(this.diagrams[i].getName());
             }
+
+            return diagramNames;
         }
 
-        return -1;
-    }
-
-    public isDiagramExists(diagramName: string): boolean {
-        for (var i = 0; i < this.diagrams.length; i++) {
-            if (this.diagrams[i].getName() === diagramName) {
-                return true;
+        public findChildByName(childName: string): Folder {
+            for (var i = 0; i < this.childrenFolders.length; i++) {
+                if (this.childrenFolders[i].getName() === childName) {
+                    return this.childrenFolders[i];
+                }
             }
+            return null;
         }
 
-        return false;
-    }
-
-    public isChildExists(folderName: string): boolean {
-        for (var i = 0; i < this.childrenFolders.length; i++) {
-            if (this.childrenFolders[i].getName() === folderName) {
-                return true;
+        public getDiagramIdByName(diagramName: string): number {
+            for (var i = 0; i < this.diagrams.length; i++) {
+                if (this.diagrams[i].getName() === diagramName) {
+                    return this.diagrams[i].getId();
+                }
             }
+
+            return -1;
         }
 
-        return false;
-    }
+        public isDiagramExists(diagramName: string): boolean {
+            for (var i = 0; i < this.diagrams.length; i++) {
+                if (this.diagrams[i].getName() === diagramName) {
+                    return true;
+                }
+            }
 
-    public deleteChildByName(folderName: string): void {
-        this.childrenFolders = this.childrenFolders.filter((folder) => !(folder.getName() === folderName));
-    }
+            return false;
+        }
 
-    public deleteDiagramByName(diagramName: string): void {
-        this.diagrams = this.diagrams.filter((diagram) => !(diagram.getName() === diagramName));
-    }
+        public isChildExists(folderName: string): boolean {
+            for (var i = 0; i < this.childrenFolders.length; i++) {
+                if (this.childrenFolders[i].getName() === folderName) {
+                    return true;
+                }
+            }
 
-    public setId(id: number): void {
-        this.id = id;
-    }
+            return false;
+        }
 
-    public getId(): number {
-        return this.id;
-    }
+        public deleteChildByName(folderName: string): void {
+            this.childrenFolders = this.childrenFolders.filter((folder) => !(folder.getName() === folderName));
+        }
 
-    public setName(name: string): void {
-        this.name = name;
-    }
+        public deleteDiagramByName(diagramName: string): void {
+            this.diagrams = this.diagrams.filter((diagram) => !(diagram.getName() === diagramName));
+        }
 
-    public getName(): string {
-        return this.name;
-    }
+        public setId(id: number): void {
+            this.id = id;
+        }
 
-    public getParent(): Folder {
-        return this.parent;
-    }
+        public getId(): number {
+            return this.id;
+        }
 
-    public addChild(folder: Folder): void {
-        this.childrenFolders.push(folder);
-    }
+        public setName(name: string): void {
+            this.name = name;
+        }
 
-    public getChildren(): Folder[] {
-        return this.childrenFolders;
-    }
+        public getName(): string {
+            return this.name;
+        }
 
-    public addDiagram(diagram: Diagram): void {
-        this.diagrams.push(diagram);
-    }
+        public getParent(): Folder {
+            return this.parent;
+        }
 
-    public getDiagrams(): Diagram[] {
-        return this.diagrams;
-    }
+        public addChild(folder: Folder): void {
+            this.childrenFolders.push(folder);
+        }
 
+        public getChildren(): Folder[] {
+            return this.childrenFolders;
+        }
+
+        public addDiagram(diagram: Diagram): void {
+            this.diagrams.push(diagram);
+        }
+
+        public getDiagrams(): Diagram[] {
+            return this.diagrams;
+        }
+
+    }
 }

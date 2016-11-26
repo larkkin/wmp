@@ -1,5 +1,7 @@
 /// <reference path="AbstractSensor" />
 
-class ScalarSensor extends AbstractSensor {
-    static parentType = AbstractSensor;
+module Robots {
+    export class ScalarSensor extends AbstractSensor {
+        static parentType = AbstractSensor;
+    }
 }

@@ -1,5 +1,7 @@
 /// <reference path="../../../interfaces/robotModel/robotParts/Device" />
 
-class DeviceImpl implements Device {
-    static parentType;
+module Robots {
+    export class DeviceImpl implements Device {
+        static parentType;
+    }
 }

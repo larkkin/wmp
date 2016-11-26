@@ -1,27 +1,32 @@
-class FunctionBlock extends AbstractBlock {
+module Robots {
+    import DiagramNode = EditorCore.DiagramNode;
+    import Link = EditorCore.Link;
+    export class FunctionBlock extends AbstractBlock {
 
-    private interpreter: Interpreter;
-    private EXPECTED_NUMBER_OF_OUTBOUND_LINKS = 1;
+        private interpreter: Interpreter;
+        private EXPECTED_NUMBER_OF_OUTBOUND_LINKS = 1;
 
-    constructor(node: DiagramNode, outboundLinks: Link[], interpreter: Interpreter) {
-        super(node, outboundLinks);
-        this.interpreter = interpreter;
-    }
-    
-    public run(): void {
-        var output = this.node.getName(); + " \n";
-        this.checkExpectedNumberOfOutboundLinks(this.EXPECTED_NUMBER_OF_OUTBOUND_LINKS);
-        var properties = this.node.getChangeableProperties();
-        var body = properties["Body"].value;
-        output += body + "\n";
+        constructor(node: DiagramNode, outboundLinks: Link[], interpreter: Interpreter) {
+            super(node, outboundLinks);
+            this.interpreter = interpreter;
+        }
 
-        var parser = new Parser();
-        this.interpreter.addOrChangeUserVariablesMap(parser.parseFunction(body, this.interpreter));
-        console.log(output);
+        public run(): void {
+            var output = this.node.getName();
+            +" \n";
+            this.checkExpectedNumberOfOutboundLinks(this.EXPECTED_NUMBER_OF_OUTBOUND_LINKS);
+            var properties = this.node.getChangeableProperties();
+            var body = properties["Body"].value;
+            output += body + "\n";
+
+            var parser = new Parser();
+            this.interpreter.addOrChangeUserVariablesMap(parser.parseFunction(body, this.interpreter));
+            console.log(output);
+        }
+
+        public getNextNodeId(): string {
+            return this.outboundLinks[0].getJointObject().get('target').id;
+        }
+
     }
-    
-    public getNextNodeId(): string {
-        return this.outboundLinks[0].getJointObject().get('target').id;
-    }
-    
 }

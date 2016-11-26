@@ -1,7 +1,9 @@
-enum MouseButton {
-    left,
-    middle,
-    right,
-    browserBack,
-    browserForward
+module Common {
+    export enum MouseButton {
+        left,
+        middle,
+        right,
+        browserBack,
+        browserForward
+    }
 }

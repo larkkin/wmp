@@ -185,6 +185,19 @@
                 </executions>
             </plugin>
 
+            <!-- Add compiled JS to delete. -->
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${basedir}/src/main/webapp/resources/js/compiled</directory>
+                            <directory>${basedir}/src/main/webapp/node_modules</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+
             <!-- build helper plugin -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

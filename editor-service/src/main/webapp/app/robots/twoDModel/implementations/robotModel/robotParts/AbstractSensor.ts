@@ -1,5 +1,7 @@
 /// <reference path="DeviceImpl" />
 
-class AbstractSensor extends DeviceImpl {
-    static parentType = DeviceImpl;
+module Robots {
+    export class AbstractSensor extends DeviceImpl {
+        static parentType = DeviceImpl;
+    }
 }

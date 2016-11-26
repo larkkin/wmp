@@ -1,13 +1,15 @@
 /// <reference path="NodeType.ts" />
 /// <reference path="PaletteTypes.ts" />
 
-class ElementTypes {
+module EditorCore {
+    export class ElementTypes {
 
-    uncategorisedTypes: Map<NodeType>;
-    paletteTypes: PaletteTypes;
+        uncategorisedTypes: Map<String, NodeType>;
+        paletteTypes: PaletteTypes;
 
-    constructor() {
-        this.uncategorisedTypes = {};
-        this.paletteTypes = new PaletteTypes();
+        constructor() {
+            this.uncategorisedTypes = new Map<String, NodeType>()
+            this.paletteTypes = new PaletteTypes();
+        }
     }
 }

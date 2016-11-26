@@ -2,6 +2,8 @@
 /// <reference path="DeviceInfo.ts" />
 /// <reference path="PortInfo.ts" />
 
-interface CommonRobotModel extends RobotModelInterface {
-    addAllowedConnection(port: PortInfo, devices: DeviceInfo[]);
+module Robots {
+    export interface CommonRobotModel extends RobotModelInterface {
+        addAllowedConnection(port: PortInfo, devices: DeviceInfo[]);
+    }
 }

@@ -1,5 +1,7 @@
-interface AbstractItem {
-    showHandles(): void;
-    hideHandles(): void;
-    remove(): void;
+module Robots {
+    export interface AbstractItem {
+        showHandles(): void;
+        hideHandles(): void;
+        remove(): void;
+    }
 }

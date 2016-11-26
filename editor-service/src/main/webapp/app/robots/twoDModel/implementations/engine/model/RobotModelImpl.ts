@@ -9,152 +9,152 @@
 /// <reference path="../../../interfaces/robotModel/DeviceInfo.ts" />
 /// <reference path="../../../types/TwoDPosition.ts" />
 
-class RobotModelImpl implements RobotModel {
-    
-    private robotItem: RobotItem;
-    private twoDRobotModel: TwoDRobotModel;
-    private sensorsConfiguration: SensorsConfiguration;
-    private worldModel: WorldModel;
-    private displayWidget: DisplayWidget;
-    private runner: Runner;
-    private isInteractive: boolean;
-    private deviceConfiguration: DeviceConfiguration;
+module Robots {
+    export class RobotModelImpl implements RobotModel {
 
-    constructor(worldModel: WorldModel, twoDRobotModel: TwoDRobotModel, position: TwoDPosition,
-        isInteractive: boolean) {
-        this.worldModel = worldModel;
-        this.twoDRobotModel = twoDRobotModel;
-        this.isInteractive = isInteractive;
-        this.robotItem = new RobotItemImpl(worldModel, position, twoDRobotModel.getRobotImage(), isInteractive);
-        this.sensorsConfiguration = new SensorsConfiguration(this);
-        this.displayWidget = new DisplayWidget();
-        this.deviceConfiguration = new DeviceConfiguration();
-        this.runner = new Runner();
-    }
+        private robotItem: RobotItem;
+        private twoDRobotModel: TwoDRobotModel;
+        private sensorsConfiguration: SensorsConfiguration;
+        private worldModel: WorldModel;
+        private displayWidget: DisplayWidget;
+        private runner: Runner;
+        private isInteractive: boolean;
+        private deviceConfiguration: DeviceConfiguration;
 
-    info(): TwoDRobotModel {
-        return this.twoDRobotModel;
-    }
+        constructor(worldModel: WorldModel, twoDRobotModel: TwoDRobotModel, position: TwoDPosition,
+                    isInteractive: boolean) {
+            this.worldModel = worldModel;
+            this.twoDRobotModel = twoDRobotModel;
+            this.isInteractive = isInteractive;
+            this.robotItem = new RobotItemImpl(worldModel, position, twoDRobotModel.getRobotImage(), isInteractive);
+            this.sensorsConfiguration = new SensorsConfiguration(this);
+            this.displayWidget = new DisplayWidget();
+            this.deviceConfiguration = new DeviceConfiguration();
+            this.runner = new Runner();
+        }
 
-    removeSensorItem(portName: string): void {
-        this.robotItem.removeSensorItem(portName);
-    }
+        info(): TwoDRobotModel {
+            return this.twoDRobotModel;
+        }
 
-    getSensorsConfiguration(): SensorsConfiguration {
-        return this.sensorsConfiguration;
-    }
+        removeSensorItem(portName: string): void {
+            this.robotItem.removeSensorItem(portName);
+        }
 
-    addSensorItem(portName: string, deviceType: DeviceInfo, isInteractive: boolean, position?: TwoDPosition,
-                  direction?: number): void {
-        this.robotItem.addSensorItem(portName, deviceType, this.twoDRobotModel.sensorImagePath(deviceType),
-            isInteractive, position, direction);
-    }
+        getSensorsConfiguration(): SensorsConfiguration {
+            return this.sensorsConfiguration;
+        }
 
-    isModelInteractive(): boolean {
-        return this.isInteractive;
-    }
+        addSensorItem(portName: string, deviceType: DeviceInfo, isInteractive: boolean, position?: TwoDPosition,
+                      direction?: number): void {
+            this.robotItem.addSensorItem(portName, deviceType, this.twoDRobotModel.sensorImagePath(deviceType),
+                isInteractive, position, direction);
+        }
 
-    private parsePositionString(positionStr: string): TwoDPosition {
-        var splittedStr = positionStr.split(":");
-        var x = parseFloat(splittedStr[0]);
-        var y = parseFloat(splittedStr[1]);
-        return new TwoDPosition(x, y);
-    }
+        isModelInteractive(): boolean {
+            return this.isInteractive;
+        }
 
-    deserialize(xml, offsetX: number, offsetY: number): void {
-        var posString = xml.getAttribute('position');
-        var pos = this.parsePositionString(posString);
-        pos.x += offsetX;
-        pos.y += offsetY;
-        var direction = parseFloat(xml.getAttribute('direction'));
-        this.robotItem.setStartPosition(pos, direction);
-        this.robotItem.setOffsetX(offsetX);
-        this.robotItem.setOffsetY(offsetY);
-        this.robotItem.returnToStart();
+        private parsePositionString(positionStr: string): TwoDPosition {
+            var splittedStr = positionStr.split(":");
+            var x = parseFloat(splittedStr[0]);
+            var y = parseFloat(splittedStr[1]);
+            return new TwoDPosition(x, y);
+        }
 
-        this.sensorsConfiguration.deserialize(xml);
+        deserialize(xml, offsetX: number, offsetY: number): void {
+            var posString = xml.getAttribute('position');
+            var pos = this.parsePositionString(posString);
+            pos.x += offsetX;
+            pos.y += offsetY;
+            var direction = parseFloat(xml.getAttribute('direction'));
+            this.robotItem.setStartPosition(pos, direction);
+            this.robotItem.setOffsetX(offsetX);
+            this.robotItem.setOffsetY(offsetY);
+            this.robotItem.returnToStart();
 
-        this.robotItem.show();
-    }
+            this.sensorsConfiguration.deserialize(xml);
 
-    showCheckResult(result) {
-        this.stopPlay();
-        this.runner.run(this.robotItem, this.displayWidget, result);
-    }
+            this.robotItem.show();
+        }
 
-    stopPlay(): void {
-        this.runner.stop(this.robotItem, this.displayWidget);
-        this.robotItem.clearCurrentPosition();
-        this.robotItem.returnToStart();
-    }
+        showCheckResult(result) {
+            this.stopPlay();
+            this.runner.run(this.robotItem, this.displayWidget, result);
+        }
 
-    closeDisplay(): void {
-        this.displayWidget.hide();
-    }
+        stopPlay(): void {
+            this.runner.stop(this.robotItem, this.displayWidget);
+            this.robotItem.clearCurrentPosition();
+            this.robotItem.returnToStart();
+        }
 
-    showDisplay(): void {
-        this.displayWidget.show();
-    }
+        closeDisplay(): void {
+            this.displayWidget.hide();
+        }
 
-    follow(value: boolean) {
-        this.robotItem.follow(value);
-    }
+        showDisplay(): void {
+            this.displayWidget.show();
+        }
 
-    getDeviceByPortName(portName: string): Device {
-        return this.deviceConfiguration.getDeviceByPortName(portName);
-    }
+        follow(value: boolean) {
+            this.robotItem.follow(value);
+        }
 
-    nextFragment(): void {
-        var angle = MathUtils.toRadians(this.robotItem.getDirection());
-        var robotHeight = 50;
-        var timeInterval = 1;
-        var speedLeft = (<Motor> this.getDeviceByPortName("M3")).getPower() / 70;
-        var speedRight = (<Motor> this.getDeviceByPortName("M4")).getPower() / 70;
-        var averageSpeed = (speedLeft + speedRight) / 2;
-        var deltaX = 0;
-        var deltaY = 0;
-        if (speedLeft != speedRight) {
-            var radius = speedLeft * robotHeight / (speedLeft - speedRight);
-            var averageRadius = radius - robotHeight / 2;
-            var angularSpeed = 0;
-            if (speedLeft == -speedRight) {
-                angularSpeed = speedLeft / radius;
-            } else {
-                angularSpeed = averageSpeed / averageRadius;
+        getDeviceByPortName(portName: string): Device {
+            return this.deviceConfiguration.getDeviceByPortName(portName);
+        }
+
+        nextFragment(): void {
+            var angle = MathUtils.toRadians(this.robotItem.getDirection());
+            var robotHeight = 50;
+            var timeInterval = 1;
+            var speedLeft = (<Motor> this.getDeviceByPortName("M3")).getPower() / 70;
+            var speedRight = (<Motor> this.getDeviceByPortName("M4")).getPower() / 70;
+            var averageSpeed = (speedLeft + speedRight) / 2;
+            var deltaX = 0;
+            var deltaY = 0;
+            if (speedLeft != speedRight) {
+                var radius = speedLeft * robotHeight / (speedLeft - speedRight);
+                var averageRadius = radius - robotHeight / 2;
+                var angularSpeed = 0;
+                if (speedLeft == -speedRight) {
+                    angularSpeed = speedLeft / radius;
+                } else {
+                    angularSpeed = averageSpeed / averageRadius;
+                }
+                var gammaRadians = timeInterval * angularSpeed;
+                angle += gammaRadians;
+
+                deltaX = averageSpeed * Math.cos(angle);
+                deltaY = averageSpeed * Math.sin(angle);
             }
-            var gammaRadians = timeInterval * angularSpeed;
-            angle += gammaRadians;
+            else {
+                deltaX = averageSpeed * Math.cos(angle);
+                deltaY += averageSpeed * Math.sin(angle);
+            }
 
-            deltaX = averageSpeed * Math.cos(angle);
-            deltaY = averageSpeed * Math.sin(angle);
-        }
-        else {
-            deltaX = averageSpeed * Math.cos(angle);
-            deltaY += averageSpeed * Math.sin(angle);
+            this.robotItem.move(deltaX, deltaY, MathUtils.toDegrees(angle));
         }
 
-        this.robotItem.move(deltaX, deltaY, MathUtils.toDegrees(angle));
-    }
+        setMarkerDown(down: boolean): void {
+            this.robotItem.setMarkerDown(down);
+        }
 
-    setMarkerDown(down: boolean): void {
-        this.robotItem.setMarkerDown(down);
-    }
+        setMarkerColor(color: string): void {
+            this.robotItem.setMarkerColor(color);
+        }
 
-    setMarkerColor(color: string): void {
-        this.robotItem.setMarkerColor(color);
-    }
+        clearState(): void {
+            this.deviceConfiguration.clearState();
+        }
 
-    clearState(): void {
-        this.deviceConfiguration.clearState();
-    }
-    
-    clearCurrentPosition(): void {
-        this.robotItem.clearCurrentPosition();
-    }
-    
-    getDisplayWidget(): DisplayWidget {
-        return this.displayWidget;    
-    }
-    
+        clearCurrentPosition(): void {
+            this.robotItem.clearCurrentPosition();
+        }
 
+        getDisplayWidget(): DisplayWidget {
+            return this.displayWidget;
+        }
+    }
 }

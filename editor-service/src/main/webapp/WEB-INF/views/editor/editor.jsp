@@ -1,7 +1,7 @@
 <%@ include file="../include/include.jsp" %>
-
+<html ng-app="Robots">
 <head>
-    <title>Robots diagram editor</title>
+    <title>Editor</title>
 
     <jsp:include page="../include/scripts.jsp" flush="true"/>
     <jsp:include page="../include/properties.jsp" flush="true"/>
@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="<c:url value='/resources/css/base.css' />"/>
 </head>
 
-<body ng-app ng-controller="RootDiagramController">
+<body ng-controller="RootDiagramController">
     <%@ include file="diagramContent.jsp" %>
     <%@ include file="2dmodelContent.jsp" %>
 </body>
